@@ -12,10 +12,10 @@ response_body = ResponseBody()
 
 
 async def status(request):
-    if request.url not in connection_pool:
+    if request.host not in connection_pool:
         picker = ErrorPicker()
         picker.add(ErrorMessage("You didn't init session"))
-        print('Was error')
+        print(f'HOST:\'{request.host}\' DIDN"T FIND')
         return web.Response(
             text=response_body.response_error(picker.get_errors()),
             status=400
