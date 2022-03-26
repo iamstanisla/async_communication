@@ -1,9 +1,9 @@
-from typing import List
+from typing import List, Generic
 
 from error_message import T_ErrorMessage, ErrorMessageBase
 
 
-class ErrorPicker:
+class ErrorPicker(Generic[T_ErrorMessage]):
     pool: List[T_ErrorMessage] = list()
 
     def add(self, error_template: T_ErrorMessage) -> None:

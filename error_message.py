@@ -1,11 +1,9 @@
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
-from typing import Any, Dict
+from typing import Any, Dict, List
 from typing import TypeVar
 
-connection_pool = list()
-
-ok_status_got_count = 0
+connection_pool: List[str] = list()
 
 
 class ErrorMessageBase(metaclass=ABCMeta):
