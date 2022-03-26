@@ -4,7 +4,7 @@ import asyncio
 
 async def main() -> None:
     async with aiohttp.ClientSession('http://localhost:8080') as session:
-        # await session.post(f'/sessions')
+        await session.post(f'/sessions')
 
         while True:
             response = await session.post(f'/status', data={'payload': {'status': 'OK'}})
