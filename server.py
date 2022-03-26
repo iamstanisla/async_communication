@@ -18,7 +18,7 @@ async def status(request):
         print(f'HOST:\'{request.host}\' DIDN"T FIND')
         return web.Response(
             text=response_body.response_error(picker.get_errors()),
-            status=400
+            status=403
         )
 
     return web.Response(
