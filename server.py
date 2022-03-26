@@ -8,20 +8,21 @@ from response_body import ResponseBody
 
 connection_pool = list()
 
-ok_status_got_count = 0
+response_body = ResponseBody()
 
 
 async def status(request):
     if request.url not in connection_pool:
         picker = ErrorPicker()
         picker.add(ErrorMessage("You didn't init session"))
+        print('Was error')
         return web.Response(
-            text=ResponseBody.response_error(picker.get_errors()),
+            text=response_body.response_error(picker.get_errors()),
             status=400
         )
 
     return web.Response(
-            text=ResponseBody.response_ok(None),
+            text=response_body.response_ok(None),
             status=200
         )
 
@@ -31,7 +32,7 @@ async def session_init(request: Request) -> Response:
     print(f'CONNECTION POOL: -> {connection_pool}\nCONNECTION COUNT: -> {len(connection_pool)}')
 
     return web.Response(
-            text=ResponseBody.response_ok(None),
+            text=response_body.response_ok(None),
             status=200
         )
 
