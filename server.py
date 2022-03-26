@@ -1,3 +1,5 @@
+from typing import List
+
 from aiohttp import web
 from aiohttp.web_request import Request
 from aiohttp.web_response import Response
@@ -11,15 +13,19 @@ connection_pool = list()
 response_body = ResponseBody()
 
 
-async def status(request):
-    if request.host not in connection_pool:
+def forbid_check(request_host: str, active_host_list: List[str]):
+    if request_host not in active_host_list:
         picker = ErrorPicker()
         picker.add(ErrorMessage("You didn't init session"))
-        print(f'HOST:\'{request.host}\' DIDN"T FIND')
+        print(f'HOST:\'{request_host}\' DIDN"T FIND')
         return web.Response(
             text=response_body.response_error(picker.get_errors()),
             status=403
         )
+
+
+async def status(request):
+    forbid_check(request.host, connection_pool)
 
     return web.Response(
             text=response_body.response_ok(None),
