@@ -1,32 +1,44 @@
 from aiohttp import web
 from aiohttp.web_request import Request
 from aiohttp.web_response import Response
-from json import dumps
 
-active_url_pool = list()
+from error_message import ErrorMessage
+from error_picker import ErrorPicker
+from response_body import ResponseBody
+
+connection_pool = list()
+
+ok_status_got_count = 0
 
 
-async def data(request):
-    if request.url not in active_url_pool:
-        web.Response(text='You dodn"t have initialized session')
-    return web.Response(text='Good morning!')
+async def status(request):
+    if request.url not in connection_pool:
+        picker = ErrorPicker()
+        picker.add(ErrorMessage("You didn't init session"))
+        return web.Response(
+            text=ResponseBody.response_error(picker.get_errors()),
+            status=400
+        )
+
+    return web.Response(
+            text=ResponseBody.response_ok(None),
+            status=200
+        )
 
 
 async def session_init(request: Request) -> Response:
-    print('HOST ', request.host)
-    if request.host not in active_url_pool:
-        active_url_pool.append(request.host)
-    return web.Response(text='OK')
+    connection_pool.append(request.host)
+    print(f'CONNECTION POOL: -> {connection_pool}\nCONNECTION COUNT: -> {len(connection_pool)}')
 
-
-async def session_list(request: Request) -> Response:
-    return web.Response(text=dumps(active_url_pool))
+    return web.Response(
+            text=ResponseBody.response_ok(None),
+            status=200
+        )
 
 
 app = web.Application()
-app.add_routes([web.get('/data', data),
-                web.post('/sessions', session_init),
-                web.get('/sessions', session_list)
+app.add_routes([web.post('/status', status),
+                web.post('/sessions', session_init)
                 ])
 
 if __name__ == '__main__':
