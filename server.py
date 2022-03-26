@@ -29,7 +29,8 @@ async def status(request):
 
 async def session_init(request: Request) -> Response:
     connection_pool.append(request.host)
-    print(f'CONNECTION POOL: -> {connection_pool}\nCONNECTION COUNT: -> {len(connection_pool)}')
+    print(f'CONNECTION POOL: -> {connection_pool}\n'
+          f'CONNECTION COUNT: -> {len(connection_pool)}')
 
     return web.Response(
             text=response_body.response_ok(None),

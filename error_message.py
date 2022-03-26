@@ -26,5 +26,3 @@ class ErrorMessage(ErrorMessageBase):
 
 
 T_ErrorMessage = TypeVar('T_ErrorMessage', bound='ErrorMessageBase')
-
-

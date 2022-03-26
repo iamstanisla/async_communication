@@ -8,7 +8,10 @@ from json_encoder import JsonEncoder
 class ResponseBody:
     json_encoder = JsonEncoder()
 
-    def response_ok(self, payload: Union[List[Any], Dict[str, Any], None]) -> str:
+    def response_ok(
+            self,
+            payload: Union[List[Any], Dict[str, Any], None]
+    ) -> str:
         return dumps(
             obj={
                 'error': False,
@@ -18,7 +21,10 @@ class ResponseBody:
             default=self.json_encoder.default,
         )
 
-    def response_error(self, error_log: List[T_ErrorMessage]) -> str:
+    def response_error(
+            self,
+            error_log: List[T_ErrorMessage]
+    ) -> str:
         assert bool(error_log), "error list cannot be empty"
         assert isinstance(error_log, list), "error list cannot be empty"
         return dumps(
@@ -29,4 +35,3 @@ class ResponseBody:
             },
             default=self.json_encoder.default,
         )
-
